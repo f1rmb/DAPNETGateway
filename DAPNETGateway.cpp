@@ -22,8 +22,10 @@
 #include "Thread.h"
 #include "Timer.h"
 #include "Log.h"
+#ifndef NO_REGEX
 #include "REGEX.h"
 #include <regex>
+#endif
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <Windows.h>
@@ -110,8 +112,10 @@ m_schedule(NULL),
 m_allSlots(false),
 m_currentSlot(0U),
 m_sentCodewords(0U),
+#ifndef NO_REGEX
 m_regexBlacklist(),
 m_regexWhitelist(),
+#endif
 m_mmdvmFree(false)
 {
 }
@@ -269,6 +273,7 @@ int CDAPNETGateway::run()
 	std::vector<unsigned int> whiteList = m_conf.getWhiteList();
 	std::vector<unsigned int> blackList = m_conf.getBlackList();
 
+#ifndef NO_REGEX
 	std::vector<std::regex> regexBlacklist;
 	std::vector<std::regex> regexWhitelist;
 
@@ -281,7 +286,7 @@ int CDAPNETGateway::run()
 	m_regexWhitelist = new CREGEX(m_conf.getwhitelistRegexfile());
 		if (m_regexWhitelist->load())
 		regexWhitelist = m_regexWhitelist->get();
-
+#endif
 
 	for (;;) {
 		unsigned char buffer[200U];
@@ -326,10 +331,11 @@ int CDAPNETGateway::run()
 			// If we have a black list of RICs, use it.
 			if (!blackList.empty())
 				blackListRIC = std::find(blackList.begin(), blackList.end(), message->m_ric) != blackList.end();
-			if (blackListRIC)
-				LogDebug("Blacklist match: Not queueing message to %07u, type %u, message: \"%.*s\"", message->m_ric, message->m_type, message->m_length, message->m_message);
+			//if (blackListRIC)
+			//LogDebug("Blacklist match: Not queueing message to %07u, type %u, message: \"%.*s\"", message->m_ric, message->m_type, message->m_length, message->m_message);
 
 			std::string  messageBody(reinterpret_cast<char*>(message->m_message));
+#ifndef NO_REGEX
 			//If we have a list of blacklist REGEXes, use them 
 			if (!regexBlacklist.empty()) {
 				for (std::regex regex : regexBlacklist) {
@@ -352,6 +358,7 @@ int CDAPNETGateway::run()
 					}
 				}
 			}
+#endif
 
 			if (found && !blackListRIC && !blacklistRegexmatch && whitelistRegexmatch) {
 				switch (message->m_functional) {
@@ -372,7 +379,7 @@ int CDAPNETGateway::run()
 				}
 
 				m_queue.push_front(message);
-				LogDebug("Messages in Queue %04u", m_queue.size());
+				//LogDebug("Messages in Queue %04u", m_queue.size());
 			}
 		}
 

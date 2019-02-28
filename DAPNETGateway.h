@@ -24,12 +24,16 @@
 #include "POCSAGMessage.h"
 #include "StopWatch.h"
 #include "Conf.h"
+#ifndef NO_REGEX
 #include "REGEX.h"
+#endif
 
 #include <string>
 #include <deque>
 #include <vector>
+#ifndef NO_REGEX
 #include <regex>
+#endif
 
 class CDAPNETGateway
 {
@@ -49,8 +53,10 @@ private:
 	bool                        m_allSlots;
 	unsigned int                m_currentSlot;
 	unsigned int                m_sentCodewords;
+#ifndef NO_REGEX
 	CREGEX*                     m_regexBlacklist;
 	CREGEX*                     m_regexWhitelist;
+#endif
 	bool                        m_mmdvmFree;
 
 

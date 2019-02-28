@@ -21,6 +21,7 @@
 #if !defined(REGEX_H)
 #define	REGEX_H
 
+#ifndef NO_REGEX
 
 #include <vector>
 #include <string>
@@ -39,5 +40,7 @@ private:
 	std::string              m_regexFile;
 	std::vector<std::regex>  m_regex;
 };
+
+#endif
 
 #endif

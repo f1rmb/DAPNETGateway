@@ -18,6 +18,8 @@
 *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+#ifndef NO_REGEX
+
 #include "REGEX.h"
 #include "Log.h"
 
@@ -87,3 +89,5 @@ std::vector<std::regex>  CREGEX::get()
 {
 	return(m_regex);
 }
+
+#endif
