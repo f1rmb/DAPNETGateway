@@ -1,6 +1,6 @@
 CC      = gcc
 CXX     = g++
-CFLAGS  = -g -O3 -Wall -std=c++0x -pthread -DNO_REGEX
+CFLAGS  = -g -O3 -Wall -std=c++0x -pthread
 LIBS    = -lm -lpthread
 LDFLAGS = -g
 

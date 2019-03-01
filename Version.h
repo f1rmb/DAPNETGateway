@@ -19,6 +19,6 @@
 #if !defined(VERSION_H)
 #define	VERSION_H
 
-const char* VERSION = "20180825_Pi-Star";
+const char* VERSION = "20180825_Pi-Star-v4";
 
 #endif
